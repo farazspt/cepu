@@ -1,5 +1,6 @@
 package com.kkp.application.ui.login;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,43 +12,47 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.kkp.application.R;
+import com.kkp.application.ui.helper.proses_login;
 import com.kkp.application.ui.home.HomeActivity;
 
 public class LoginActivity extends AppCompatActivity {
     EditText username, password;
     Button btnLogin;
+    AlertDialog.Builder builder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        initialize();
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (username.getText().toString().equals("") || password.getText().toString().equals("")) {
+                    builder = new AlertDialog.Builder(LoginActivity.this);
+                    builder.setTitle("Warning..!");
+                    builder.setMessage("Masukan nama pengguna/password!");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                } else {
+                    proses_login backgroundTask = new proses_login(LoginActivity.this);
+                    backgroundTask.execute("Login", username.getText().toString(), password.getText().toString());
+
+                }
+            }
+        });
+
+    }
+
+    private void initialize() {
         username = (EditText) findViewById(R.id.etUsername);
         password = (EditText) findViewById(R.id.etPassword);
         btnLogin = (Button)findViewById(R.id.btnSignin);
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String usernameKey = username.getText().toString();
-                String passwordKey = password.getText().toString();
-
-                if (usernameKey.equals("admin") && passwordKey.equals("123")){
-                    //jika login berhasil
-                    Toast.makeText(getApplicationContext(), "LOGIN SUKSES",
-                            Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    LoginActivity.this.startActivity(intent);
-                    finish();
-                }else {
-                    //jika login gagal
-                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                    builder.setMessage("Username atau Password Anda salah!")
-                            .setNegativeButton("Retry", null).create().show();
-                }
-            }
-
-        });
-
     }
 }
