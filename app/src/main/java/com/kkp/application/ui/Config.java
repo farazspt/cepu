@@ -2,5 +2,5 @@ package com.kkp.application.ui;
 
 public class Config {
 
-    public static final String BASE_URL = "https://a875-101-255-11-228.ngrok.io/";
+    public static final String BASE_URL = "https://f633-111-94-69-189.ngrok.io/";
 }
