@@ -37,6 +37,7 @@ import java.util.HashMap;
 public class ListActivity extends AppCompatActivity implements ListView.OnItemClickListener {
     private String JSON_STRING;
     private ListView listView;
+
     ImageView ivGambar;
 
     @Override
@@ -59,7 +60,7 @@ public class ListActivity extends AppCompatActivity implements ListView.OnItemCl
 
             for(int i=0;i<data.length();i++){
                 JSONObject jo3 = data.getJSONObject(i);
-                int id = jo3.getInt("id");
+                String id = jo3.getString("id");
                 String judul = jo3.getString("judul");
                 String nama = jo3.getString("nama");
                 String notlpn = jo3.getString("notlpn");
