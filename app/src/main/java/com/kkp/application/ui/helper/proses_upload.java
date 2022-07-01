@@ -6,11 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.kkp.application.ui.Config;
 import com.kkp.application.ui.home.HomeActivity;
 
 import org.json.JSONArray;
@@ -29,15 +27,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class proses_login extends AsyncTask<String,Void,String> {
-//    private String login_uri = "https://moprog-ubl.000webhostapp.com/php/login.php";
-    private String login_uri = Config.BASE_URL+"auth/login";
+public class proses_upload extends AsyncTask<String,Void, String> {
+
+    //Link
+    private String url_proses_login = "https://6abd-101-255-11-228.ngrok.io/pelaporan";
+
     Context context;
     ProgressDialog progressDialog;
     Activity activity;
     AlertDialog.Builder builder;
 
-    public proses_login(Context context) {
+    public proses_upload(Context context) {
         this.context = context;
         activity = (Activity) context;
     }
@@ -47,7 +47,7 @@ public class proses_login extends AsyncTask<String,Void,String> {
         super.onPreExecute();
         builder = new AlertDialog.Builder(activity);
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Masuk...");
+        progressDialog.setMessage("Menyimpan Data..");
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -56,23 +56,35 @@ public class proses_login extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... params) {
         String method = params[0];
-        if (method.equals("Login")){
+        if (method.equals("Upload")) {
             try {
-                URL url = new URL(login_uri);
+                URL url = new URL(url_proses_login);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                connection.setRequestProperty("token", "8d745146006dfe270e241a1acf3b8ca8969c90a50f5b21c1ad4b368272e144b3caf651c0daa8f2fa");
+                connection.setUseCaches(false);
                 connection.setDoOutput(true);
                 connection.setDoInput(true);
                 OutputStream outputStream = connection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String username, password;
-                username = params[1];
-                password = params[2];
+                String judul, kategori, notlpn, detail, gambar;
 
-                String data_login = URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8") + "&" +
-                        URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                kategori = params[1];
+                judul = params[2];
+                notlpn = params[3];
+                detail = params[4];
+                gambar= params[5];
 
-                bufferedWriter.write(data_login);
+
+                String data_upload =
+                        URLEncoder.encode("judul", "UTF-8") + "=" + URLEncoder.encode(judul, "UTF-8") + "&" +
+                                URLEncoder.encode("notlpn", "UTF-8") + "=" + URLEncoder.encode(notlpn, "UTF-8") +
+                                URLEncoder.encode("kategori", "UTF-8") + "=" + URLEncoder.encode(kategori, "UTF-8") +"&" +
+                                URLEncoder.encode("detail", "UTF-8") + "=" + URLEncoder.encode(detail, "UTF-8") + "&" +
+                                URLEncoder.encode("gambar", "UTF-8") + "=" + URLEncoder.encode(gambar, "UTF-8");
+
+                bufferedWriter.write(data_upload);
                 bufferedWriter.flush();
                 bufferedWriter.close();
                 outputStream.close();
@@ -82,12 +94,12 @@ public class proses_login extends AsyncTask<String,Void,String> {
                 StringBuilder stringBuilder = new StringBuilder();
                 String line = "";
 
-                while ((line = bufferedReader.readLine()) != null){
+                while ((line = bufferedReader.readLine()) != null) {
                     stringBuilder.append(line + "\n");
                 }
 
                 connection.disconnect();
-                Thread.sleep(1000);
+                Thread.sleep(3000);
                 return stringBuilder.toString().trim();
 
             } catch (MalformedURLException e) {
@@ -105,25 +117,20 @@ public class proses_login extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         try {
+
             JSONObject jsonObject = new JSONObject(s);
             JSONArray jsonArray = jsonObject.getJSONArray("Server");
 
             JSONObject JO = jsonArray.getJSONObject(0);
             String code = JO.getString("code");
-            String message = JO.getString("pesan");
-
-            JSONObject jsonArrayData = JO.getJSONObject("data");
-            String token = jsonArrayData.getString("token");
-//            System.out.println(token);
-//            Log.d("token", token);
-
-            //Script jika berhasil masuk
-            if (code.equals("login_true")){
+            String message = JO.getString("message");
+            //Script jika berhasil kirim
+            if (code.equals("addLaporan_true")) {
                 Intent intent = new Intent(context, HomeActivity.class);
                 context.startActivity(intent);
             }
-            //script jika gagal masuk
-            else if (code.equals("login_false")){
+            //script jika gagal kirim
+            else if (code.equals("getLaporan_false")) {
                 builder.setMessage(message);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -139,5 +146,5 @@ public class proses_login extends AsyncTask<String,Void,String> {
         }
 
     }
-}
 
+}

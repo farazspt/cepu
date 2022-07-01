@@ -19,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText username, password;
     Button btnLogin;
     AlertDialog.Builder builder;
+    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
