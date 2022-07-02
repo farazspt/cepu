@@ -5,11 +5,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.kkp.application.BuildConfig;
 import com.kkp.application.ui.Config;
 import com.kkp.application.ui.home.HomeActivity;
 
@@ -36,6 +39,7 @@ public class proses_login extends AsyncTask<String,Void,String> {
     ProgressDialog progressDialog;
     Activity activity;
     AlertDialog.Builder builder;
+    String token;
 
     public proses_login(Context context) {
         this.context = context;
@@ -113,14 +117,29 @@ public class proses_login extends AsyncTask<String,Void,String> {
             String message = JO.getString("pesan");
 
             JSONObject jsonArrayData = JO.getJSONObject("data");
-            String token = jsonArrayData.getString("token");
+            token = jsonArrayData.getString("token");
+            String level = jsonArrayData.getString("level");
 //            System.out.println(token);
 //            Log.d("token", token);
+//            Log.d("level", level);
 
             //Script jika berhasil masuk
             if (code.equals("login_true")){
-                Intent intent = new Intent(context, HomeActivity.class);
-                context.startActivity(intent);
+                if(level.matches("admin|guru" )){
+                    builder.setMessage("Anda tidak bisa masuk");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            progressDialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }else {
+                    saveToken("token", token);
+                    Intent intent = new Intent(context, HomeActivity.class);
+                    context.startActivity(intent);
+                }
             }
             //script jika gagal masuk
             else if (code.equals("login_false")){
@@ -138,6 +157,21 @@ public class proses_login extends AsyncTask<String,Void,String> {
             e.printStackTrace();
         }
 
+    }
+
+//    @Override
+//    protected void onPause(){
+//        super.onPause();
+//        Log.d("token",getToken("token"));
+//    }
+
+    public void saveToken(String token, String value) {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("MyToken", Context.MODE_PRIVATE);
+//        SharedPreferences sharedPreferences = getSharedPreferences("MyToken", 0);
+        SharedPreferences.Editor editor =  sharedPreferences.edit();
+
+        editor.putString(token, value);
+        editor.apply();
     }
 }
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -223,7 +224,9 @@ public class FormBarangHilang extends AppCompatActivity {
 
                 httpURLConnectionObject.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-                httpURLConnectionObject.setRequestProperty("token", "8d745146006dfe270e241a1acf3b8ca8969c90a50f5b21c1ad4b368272e144b3caf651c0daa8f2fa");
+                String token = getToken("token");
+
+                httpURLConnectionObject.setRequestProperty("token", token);
 
                 httpURLConnectionObject.setUseCaches(false);
 
@@ -291,6 +294,17 @@ public class FormBarangHilang extends AppCompatActivity {
             return stringBuilderObject.toString();
         }
 
+    }
+
+    private String getToken(String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyToken", 0);
+        if(sharedPreferences.contains(token)){
+            String token1 = sharedPreferences.getString(token, null);
+            return token1;
+        }
+        else{
+            return null;
+        }
     }
 
     public void kembali(View view) {

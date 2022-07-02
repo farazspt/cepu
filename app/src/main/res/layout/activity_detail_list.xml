@@ -18,11 +18,11 @@
 
         <ImageView
             android:id="@+id/panahKiridetail1"
-            android:onClick="panahKiridetail1"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginTop="22dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="22dp"
+            android:onClick="panahKiridetail1"
             android:src="@drawable/ic_panah_kiri" />
 
         <TextView

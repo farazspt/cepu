@@ -1,8 +1,12 @@
 package com.kkp.application.ui.login;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,12 +22,18 @@ import com.kkp.application.ui.home.HomeActivity;
 public class LoginActivity extends AppCompatActivity {
     EditText username, password;
     Button btnLogin;
+    Context context;
+//    Activity activity;
+
     AlertDialog.Builder builder;
-    private String token;
+//    private String token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+//        getToken("token");
+
 
         initialize();
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -44,11 +54,27 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     proses_login backgroundTask = new proses_login(LoginActivity.this);
                     backgroundTask.execute("Login", username.getText().toString(), password.getText().toString());
-
                 }
             }
         });
 
+        if(getToken("token") != null){
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
+
+    private String getToken(String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyToken", 0);
+        if(sharedPreferences.contains(token)){
+            String token1 = sharedPreferences.getString(token, null);
+            return token1;
+        }
+        else{
+            return null;
+        }
     }
 
     private void initialize() {

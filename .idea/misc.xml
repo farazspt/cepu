@@ -5,13 +5,15 @@
       <map>
         <entry key="..\:/KKP/e-lapor-master/app/src/main/res/drawable/attach.xml" value="0.1105" />
         <entry key="..\:/KKP/e-lapor-master/app/src/main/res/drawable/btn.xml" value="0.1105" />
+        <entry key="..\:/KKP/e-lapor-master/app/src/main/res/drawable/ic_logout.xml" value="0.1415" />
         <entry key="..\:/KKP/e-lapor-master/app/src/main/res/drawable/ic_panah_kiri.xml" value="0.1105" />
+        <entry key="..\:/KKP/e-lapor-master/app/src/main/res/drawable/logout.xml" value="0.1415" />
         <entry key="..\:/KKP/e-lapor-master/app/src/main/res/font/poppins.xml" value="0.2009132420091324" />
         <entry key="..\:/KKP/e-lapor-master/app/src/main/res/layout/activity_detail_list.xml" value="0.22" />
         <entry key="..\:/KKP/e-lapor-master/app/src/main/res/layout/activity_form.xml" value="0.22" />
         <entry key="..\:/KKP/e-lapor-master/app/src/main/res/layout/activity_form_barang_hilang.xml" value="0.25" />
         <entry key="..\:/KKP/e-lapor-master/app/src/main/res/layout/activity_form_pelanggaran.xml" value="0.22" />
-        <entry key="..\:/KKP/e-lapor-master/app/src/main/res/layout/activity_home.xml" value="0.18" />
+        <entry key="..\:/KKP/e-lapor-master/app/src/main/res/layout/activity_home.xml" value="0.22" />
         <entry key="..\:/KKP/e-lapor-master/app/src/main/res/layout/activity_list.xml" value="0.17685185185185184" />
         <entry key="..\:/KKP/e-lapor-master/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/KKP/e-lapor-master/app/src/main/res/layout/activity_main.xml" value="0.17824074074074073" />

@@ -8,10 +8,11 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="58dp"
         android:background="#C2FFC4"
         android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,11 +21,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
-            android:text="E-LAPOR"
+            android:text="   E-LAPOR"
             android:textAlignment="center"
             android:textSize="28dp"
+            android:layout_marginLeft="25dp"
             android:textStyle="bold"
+            android:layout_weight="1"
             android:textColor="@color/black"/>
+
+        <ImageView
+            android:onClick="logout"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/logout"
+            android:layout_marginRight="20dp"
+            />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
