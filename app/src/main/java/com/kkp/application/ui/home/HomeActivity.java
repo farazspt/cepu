@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,13 +18,22 @@ import com.kkp.application.R;
 import com.kkp.application.ui.login.LoginActivity;
 import com.kkp.application.ui.tambah.TambahLaporanActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class HomeActivity extends AppCompatActivity {
     Activity activity;
+    TextView tvakun;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        tvakun = findViewById(R.id.tvAkun);
+
+        showNama("nama");
     }
 
     public void list(View view) {
@@ -43,6 +56,21 @@ public class HomeActivity extends AppCompatActivity {
 
         editor.clear();
         editor.commit();
+    }
+
+    private void showNama(String json){
+        try{
+            JSONObject jo = new JSONObject(json);
+            JSONArray result = jo.getJSONArray("Server");
+            JSONObject jo2 = result.getJSONObject(0);
+            JSONObject data = jo2.getJSONObject("data");
+
+            String nama = data.getString("nama");
+
+            tvakun.setText(nama);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
