@@ -137,11 +137,6 @@ public class ListActivity extends AppCompatActivity implements ListView.OnItemCl
 //                    connection.setRequestMethod("GET");
                     String token = getToken("token");
                     connection.setRequestProperty("token", token);
-//                    connection.setDoOutput(true);
-//                    connection.setDoInput(true);
-//                    InputStream
-//                    OutputStream outputStream = connection.getOutputStream();
-//                    outputStream.close();
 
                     InputStream inputStream = connection.getInputStream();
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));

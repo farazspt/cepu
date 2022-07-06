@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         if(getToken("token") != null){
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class).putExtra("from", "Login");
             startActivity(intent);
         }
 
@@ -81,5 +81,11 @@ public class LoginActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.etUsername);
         password = (EditText) findViewById(R.id.etPassword);
         btnLogin = (Button)findViewById(R.id.btnSignin);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+        super.onBackPressed();
     }
 }

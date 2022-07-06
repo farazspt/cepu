@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.kkp.application.BuildConfig;
 import com.kkp.application.ui.Config;
 import com.kkp.application.ui.home.HomeActivity;
+import com.kkp.application.ui.home.HomeGuru;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,23 +120,14 @@ public class proses_login extends AsyncTask<String,Void,String> {
             JSONObject jsonArrayData = JO.getJSONObject("data");
             token = jsonArrayData.getString("token");
             String level = jsonArrayData.getString("level");
-//            System.out.println(token);
-//            Log.d("token", token);
-//            Log.d("level", level);
 
             //Script jika berhasil masuk
             if (code.equals("login_true")){
-                if(level.matches("admin|guru" )){
-                    builder.setMessage("Anda tidak bisa masuk");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            progressDialog.dismiss();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }else {
+                if(level.matches("admin|guru")){
+                    saveToken("token", token);
+                    Intent i = new Intent(context, HomeGuru.class);
+                    context.startActivity(i);
+                }else if(level.matches("siswa")) {
                     saveToken("token", token);
                     Intent intent = new Intent(context, HomeActivity.class);
                     context.startActivity(intent);
@@ -156,7 +148,7 @@ public class proses_login extends AsyncTask<String,Void,String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        progressDialog.dismiss();
     }
 
 //    @Override
