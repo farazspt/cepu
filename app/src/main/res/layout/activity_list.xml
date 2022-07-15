@@ -12,16 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:background="#C2FFC4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_gravity="center">
 
         <ImageView
             android:id="@+id/panahKiridetail1"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="22dp"
+            android:layout_gravity="center"
             android:onClick="panahKiridetail1"
             android:src="@drawable/ic_panah_kiri" />
 
@@ -31,9 +29,9 @@
             android:fontFamily="@font/poppins"
             android:text="Daftar Laporan"
             android:textAlignment="center"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="60dp"
             android:layout_gravity="center"
-            android:textSize="25dp"
+            android:textSize="23dp"
             android:textStyle="bold"
             android:textColor="@color/black"/>
     </LinearLayout>
@@ -42,7 +40,7 @@
         android:id="@+id/listlaporan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp">
+        android:padding="3dp">
 
     </ListView>
 

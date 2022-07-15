@@ -18,15 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.kkp.application.R;
 import com.kkp.application.ui.helper.proses_login;
 import com.kkp.application.ui.home.HomeActivity;
+import com.kkp.application.ui.home.HomeGuru;
 
 public class LoginActivity extends AppCompatActivity {
     EditText username, password;
     Button btnLogin;
     Context context;
-//    Activity activity;
 
     AlertDialog.Builder builder;
-//    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +58,17 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         if(getToken("token") != null){
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class).putExtra("from", "Login");
-            startActivity(intent);
+
+            if(getLevel("level").matches("admin|guru")) {
+                Intent i = new Intent(LoginActivity.this, HomeGuru.class).putExtra("from", "Login");
+                startActivity(i);
+            }else{
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class).putExtra("from", "Login");
+                startActivity(intent);
+            }
         }
+
+
 
     }
 
@@ -71,6 +78,17 @@ public class LoginActivity extends AppCompatActivity {
         if(sharedPreferences.contains(token)){
             String token1 = sharedPreferences.getString(token, null);
             return token1;
+        }
+        else{
+            return null;
+        }
+    }
+
+    private String getLevel(String level) {
+        SharedPreferences sharedPreferences = getSharedPreferences("Level", 0);
+        if(sharedPreferences.contains(level)){
+            String level1 = sharedPreferences.getString(level, null);
+            return level1;
         }
         else{
             return null;

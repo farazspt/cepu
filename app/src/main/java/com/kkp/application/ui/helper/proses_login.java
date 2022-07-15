@@ -40,7 +40,7 @@ public class proses_login extends AsyncTask<String,Void,String> {
     ProgressDialog progressDialog;
     Activity activity;
     AlertDialog.Builder builder;
-    String token;
+    String token,nama,level;
 
     public proses_login(Context context) {
         this.context = context;
@@ -117,18 +117,22 @@ public class proses_login extends AsyncTask<String,Void,String> {
             String code = JO.getString("code");
             String message = JO.getString("pesan");
 
-            JSONObject jsonArrayData = JO.getJSONObject("data");
-            token = jsonArrayData.getString("token");
-            String level = jsonArrayData.getString("level");
+
 
             //Script jika berhasil masuk
             if (code.equals("login_true")){
+                JSONObject jsonArrayData = JO.getJSONObject("data");
+                token = jsonArrayData.getString("token");
+                nama = jsonArrayData.getString("nama");
+                String level = jsonArrayData.getString("level");
+
+                saveToken("token", token);
+                saveNama("nama", nama);
+                saveLevel("level", level);
                 if(level.matches("admin|guru")){
-                    saveToken("token", token);
                     Intent i = new Intent(context, HomeGuru.class);
                     context.startActivity(i);
                 }else if(level.matches("siswa")) {
-                    saveToken("token", token);
                     Intent intent = new Intent(context, HomeActivity.class);
                     context.startActivity(intent);
                 }
@@ -163,6 +167,24 @@ public class proses_login extends AsyncTask<String,Void,String> {
         SharedPreferences.Editor editor =  sharedPreferences.edit();
 
         editor.putString(token, value);
+        editor.apply();
+    }
+
+    public void saveNama(String nama, String value) {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("Nama", Context.MODE_PRIVATE);
+//        SharedPreferences sharedPreferences = getSharedPreferences("MyToken", 0);
+        SharedPreferences.Editor editor =  sharedPreferences.edit();
+
+        editor.putString(nama, value);
+        editor.apply();
+    }
+
+    public void saveLevel(String level, String value) {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("Level", Context.MODE_PRIVATE);
+//        SharedPreferences sharedPreferences = getSharedPreferences("MyToken", 0);
+        SharedPreferences.Editor editor =  sharedPreferences.edit();
+
+        editor.putString(level, value);
         editor.apply();
     }
 }

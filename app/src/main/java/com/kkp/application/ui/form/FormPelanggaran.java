@@ -1,9 +1,11 @@
 package com.kkp.application.ui.form;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import com.kkp.application.R;
 import com.kkp.application.ui.Config;
+import com.kkp.application.ui.tambah.TambahLaporanActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -46,14 +49,11 @@ public class FormPelanggaran extends AppCompatActivity {
     boolean check = true;
 
     TextView tv_title;
-
     Button btnUpload, btnKirim;
-
     ImageView iv_gambar;
-
     EditText et_judul,et_nama,et_telp,et_detail;
-
     ProgressDialog progressDialog ;
+    AlertDialog.Builder builder;
 
     String GetImageName;
     String GetKategori;
@@ -101,14 +101,29 @@ public class FormPelanggaran extends AppCompatActivity {
         btnKirim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(et_judul.getText().toString().equals("")||
+                        et_telp.getText().toString().equals("")||
+                        et_detail.getText().toString().equals("")){
+                    builder = new AlertDialog.Builder(FormPelanggaran.this);
+                    builder.setTitle("Warning..!");
+                    builder.setMessage("Masih ada kolom yang kosong!");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }else{
 
-                GetKategori = "barang hilang";
-                GetJudul = et_judul.getText().toString().trim();
-                GetTelp = et_telp.getText().toString().trim();
-                GetDetail = et_detail.getText().toString().trim();
+                    GetKategori = "pelanggaran";
+                    GetJudul = et_judul.getText().toString().trim();
+                    GetTelp = et_telp.getText().toString().trim();
+                    GetDetail = et_detail.getText().toString().trim();
 
-                ImageUploadToServerFunction();
-
+                    ImageUploadToServerFunction();
+                }
             }
         });
     }
@@ -166,10 +181,11 @@ public class FormPelanggaran extends AppCompatActivity {
                 progressDialog.dismiss();
 
                 // Printing uploading success message coming from server on android app.
-                Toast.makeText(FormPelanggaran.this,string1, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Berhasil Upload", Toast.LENGTH_LONG).show();
 
                 // Setting image as transparent after done uploading.
                 iv_gambar.setImageResource(android.R.color.transparent);
+                startActivity(new Intent(FormPelanggaran.this, TambahLaporanActivity.class));
 
 
             }
